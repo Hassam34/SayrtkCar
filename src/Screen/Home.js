@@ -166,10 +166,11 @@ export default class Home extends React.Component {
         return (
             <View style={{ padding: 10 }}>
                 <Searchbar
-                    placeholder="Search"
+                    
+                    placeholder="Search your vehicle"
                     onChangeText={query => { this.setState({ firstQuery: query }); }}
                     value={firstQuery}
-                    style={{ borderRadius: 5,height:40 }}
+                    style={{ borderRadius: 5,height:40  }}
                 />
             </View>
         )

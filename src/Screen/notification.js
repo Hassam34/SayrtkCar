@@ -106,7 +106,7 @@ export default class Notificatons extends React.Component {
                 <View style={{ marginLeft: 10, marginRight: 10 }}>
                     <Image
                         style={{ height: 175, width: "100%", borderRadius: 25 }}
-                        source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSbFhb17P0n1t5loeS59KGOJyUTAScZPoUiIP6qX2fjtYdtRj4q" }}
+                        source={{ uri: "https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" }}
                     />
                     {/* <View style={{ position: 'absolute', width: "100%" }}>
                         <View style={{ flexDirection: 'row', flex: 1 }}>
