@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, ScrollView, FlatList, Image } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios'
+import { Button, CardSection, Header, Spinner } from '../components/common';
+
 // import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Octicons';
 import Icon3 from 'react-native-vector-icons/Fontisto';
@@ -17,7 +19,7 @@ export default class Notificatons extends React.Component {
     }; constructor(props) {
         super(props)
         this.state = {
-            loading: false,
+            loading: true,
             data: [],
             newData: [], firstQuery: ""
         }
@@ -38,8 +40,10 @@ export default class Notificatons extends React.Component {
             console.log("myresponse", response.data.info)
             let array = []
             array.push({ data: response.data.info })
-            this.setState({ data: array })
+            this.setState({ data: array,loading:false })
         }).catch((error) => {
+            this.setState({ loading:false })
+
             console.log("myerro", error)
 
         })
@@ -49,7 +53,7 @@ export default class Notificatons extends React.Component {
 
 
     showSpinner() {
-        if (!this.state.loading) {
+        if (this.state.loading) {
             return (<View style={{ flex: 1 }}>
                 <Spinner />
             </View>)
@@ -138,21 +142,27 @@ export default class Notificatons extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 {this.renderHeader()}
-                <ScrollView>
+                <ScrollView >
+                <View style={{ justifyContent:"center" }}>
+                    {this.state.loading ?
+                       
+                            this.showSpinner()
+                        
+                        :
+                        <View>
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={(item) => this.renderItem(item)}
+                            />
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={(item) => this.renderItem(item)}
+                            />
+                        </View>
 
-
-                    {/* <KeyboardAvoidingView behavior="height" enabled>
-                        {this.renderSearch()}
-                    </KeyboardAvoidingView>
-                    {this.renderSlider()} */}
-                    <FlatList
-                        data={this.state.data}
-                        renderItem={(item) => this.renderItem(item)}
-                    />
-                    <FlatList
-                        data={this.state.data}
-                        renderItem={(item) => this.renderItem(item)}
-                    />
+                    }
+                    </View>
+               
                 </ScrollView>
 
             </View>

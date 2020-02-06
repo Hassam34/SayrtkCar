@@ -38,7 +38,7 @@ export default class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            loading: false,
+            loading: true,
             data: [],
             newData: [], firstQuery: ""
         }
@@ -59,8 +59,9 @@ export default class Home extends React.Component {
             console.log("myresponse", response.data.info)
             let array = []
             array.push({ data: response.data.info })
-            this.setState({ data: array })
+            this.setState({ data: array, loading: false })
         }).catch((error) => {
+            this.setState({ loading: false })
             console.log("myerro", error)
 
         })
@@ -111,19 +112,9 @@ export default class Home extends React.Component {
         );
     }
 
-    renderDots() {
-        return (
-            <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                <View style={{ backgroundColor: 'gray', height: 10, width: 10, borderRadius: 50, marginRight: 8 }}></View>
-                <View style={{ backgroundColor: '#D1D1D1', height: 10, width: 10, borderRadius: 50, marginRight: 8 }}></View>
-                <View style={{ backgroundColor: '#D1D1D1', height: 10, width: 10, borderRadius: 50, marginRight: 8 }}></View>
-            </View>
-        )
-    }
-
     showSpinner() {
-        if (!this.state.loading) {
-            return (<View style={{ flex: 1 }}>
+        if (this.state.loading) {
+            return (<View style={{ flex: 1, }}>
                 <Spinner />
             </View>)
         }
@@ -166,11 +157,11 @@ export default class Home extends React.Component {
         return (
             <View style={{ padding: 10 }}>
                 <Searchbar
-                    
+
                     placeholder="Search your vehicle"
                     onChangeText={query => { this.setState({ firstQuery: query }); }}
                     value={firstQuery}
-                    style={{ borderRadius: 5,height:40  }}
+                    style={{ borderRadius: 5, height: 40 }}
                 />
             </View>
         )
@@ -210,9 +201,9 @@ export default class Home extends React.Component {
                                 <Text style={{ color: "black", fontSize: 12, fontWeight: 'bold' }}>Price 1,148,500 $</Text>
                             </View>
                         </View>
-                        <View style={{ marginRight: 10, flex: .3,justifyContent:'center' }}>
-                            <View style={{ flexDirection: 'row',backgroundColor:"#949090",borderRadius:10 ,alignItems:'center',alignContent:'center',justifyContent:'center'}}>
-                                <Text style={{ color: "white", fontSize: 12,alignSelf:'center',alignItems:'center' }}>See ALL</Text>
+                        <View style={{ marginRight: 10, flex: .3, justifyContent: 'center' }}>
+                            <View style={{ flexDirection: 'row', backgroundColor: "#949090", borderRadius: 10, alignItems: 'center', alignContent: 'center', justifyContent: 'center' }}>
+                                <Text style={{ color: "white", fontSize: 12, alignSelf: 'center', alignItems: 'center' }}>See ALL</Text>
                             </View>
                         </View>
                     </View>
@@ -235,14 +226,23 @@ export default class Home extends React.Component {
                         {this.renderSearch()}
                     </KeyboardAvoidingView>
                     {this.renderSlider()}
-                    <FlatList
-                        data={this.state.data}
-                        renderItem={(item) => this.renderItem(item)}
-                    />
-                    <FlatList
-                        data={this.state.data}
-                        renderItem={(item) => this.renderItem(item)}
-                    />
+                    {this.state.loading ?
+                        <View style={{ justifyContent: 'center', flex: 1 }}>
+                            {this.showSpinner()}
+                        </View>
+                        :
+                        <View>
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={(item) => this.renderItem(item)}
+                            />
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={(item) => this.renderItem(item)}
+                            />
+                        </View>
+
+                    }
                 </ScrollView>
 
             </View>

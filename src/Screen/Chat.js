@@ -1,29 +1,85 @@
 import React from 'react';
-import { View, Text, FlatList, Image, AsyncStorage,TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, AsyncStorage, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { Button, CardSection, Header, Spinner } from '../components/common';
 import Icon from 'react-native-vector-icons/Fontisto';
 import axios from 'axios'
 import { NavigationEvents } from "react-navigation";
-
+import moment from 'moment'
 import { Searchbar } from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 
+const messages = [
+    {
+        name: "Jhon",
+        date: moment().format('ll'),
+        message: "hello Brother I want to buy ",
+        img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+    },
+    {
+        name: "William",
+        date: moment().format('ll'),
+        message: "What is the price ? ",
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/1200px-Pierre-Person.jpg'
 
+    },
+    {
+        name: "Ahmad",
+        date: moment().format('ll'),
+        message: "Welcome ",
+        img: 'https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg'
+
+    },
+    {
+        name: "Khalil",
+        date: moment().format('ll'),
+        message: "ok got it ",
+        img: 'https://www.lifewire.com/thmb/JbIIh6ewCm49Eon66ExjbxCFJfg=/1080x1080/smart/filters:no_upscale()/fb-block-5b0a48eaba61770036afbed4-7df519e007a64108a65084e814ee4740.jpg'
+
+    },
+    {
+        name: "Jhon",
+        date: moment().format('ll'),
+        message: "hello Brother I want to buy ",
+        img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+    },
+    {
+        name: "William",
+        date: moment().format('ll'),
+        message: "What is the price ? ",
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pierre-Person.jpg/1200px-Pierre-Person.jpg'
+
+    },
+    {
+        name: "Ahmad",
+        date: moment().format('ll'),
+        message: "Welcome ",
+        img: 'https://miro.medium.com/max/2560/1*gBQxShAkxBp_YPb14CN0Nw.jpeg'
+
+    },
+    {
+        name: "Khalil",
+        date: moment().format('ll'),
+        message: "ok got it ",
+        img: 'https://www.lifewire.com/thmb/JbIIh6ewCm49Eon66ExjbxCFJfg=/1080x1080/smart/filters:no_upscale()/fb-block-5b0a48eaba61770036afbed4-7df519e007a64108a65084e814ee4740.jpg'
+
+    }
+]
 export default class Cart extends React.Component {
     static navigationOptions = {
-        tabBarLabel:() => {return null},
+        tabBarLabel: () => { return null },
         tabBarIcon: ({ focused, tintColor }) => {
             const iconName = `ios-information-circle${focused ? '' : '-outline'}`;
             return <Icon name={"hipchat"} size={25} color={tintColor} />;
         },
     };
-    constructor(){
+    constructor() {
         super()
-        this.state={
-            cartData:[],firstQuery: ""
+        this.state = {
+            cartData: [], firstQuery: ""
         }
     }
-    componentDidMount(){
-        
+    componentDidMount() {
+
     }
     renderHeader() {
         let mheight = ''
@@ -65,18 +121,55 @@ export default class Cart extends React.Component {
                     placeholder="Search your user or car"
                     onChangeText={query => { this.setState({ firstQuery: query }); }}
                     value={firstQuery}
-                    style={{ borderRadius: 5,height:40 }}
+                    style={{ borderRadius: 5, height: 40 }}
                 />
+
             </View>
         )
     }
-    
-    
+
+    renderItem = (item) => {
+        console.log("item", item)
+        let data = item.item
+        return (
+            <TouchableOpacity>
+                <View style={{ padding: 10 }}>
+                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                        <View style={{ flex: 1.5 }}>
+                            <Avatar.Image size={50} source={{ uri: data.img }} style={{ backgroundColor: '#74C5D5' }} />
+                        </View>
+                        <View style={{ flex: 6.5 }}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                                {data.name}
+                            </Text>
+                            <Text style={{ fontSize: 14, color: 'gray' }}>
+                                {data.message}
+                            </Text>
+                        </View>
+                        <View style={{ flex: 2 }}>
+                            <Text style={{ fontSize: 14, color: 'gray' }}>
+                                {data.date}
+                            </Text>
+                        </View>
+                    </View>
+
+                </View>
+            </TouchableOpacity>
+
+        )
+    }
+
     render() {
         return (<View style={{ flex: 1 }}>
-           {this.renderHeader()}
-           {this.renderSearch()}
-           
+            {this.renderHeader()}
+            <KeyboardAvoidingView behavior="height" enabled>
+                {this.renderSearch()}
+            </KeyboardAvoidingView>
+            <FlatList
+                data={messages}
+                renderItem={(item) => this.renderItem(item)}
+            />
+
         </View>)
     }
 }
